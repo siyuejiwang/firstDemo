@@ -1,6 +1,6 @@
-// var settings = require('../settings');
-// var Db = require('mongodb').Db;
-// var Connection = require('mongodb').Connection;
-// var Server = require("mongodb").Server;
+var settings = require('../settings');
+var Db = require('mongodb').Db;
+var Connection = require('mongodb').Connection;
+var Server = require("mongodb").Server;
 
-// module.exports = new Db(settings.db,new Server(settings.host,Connection.DEFAULT_PORT,{}),{safe:true});
+module.exports = new Db(settings.db,new Server('localhost','27017',{auto_reconnect: true}),{safe:true});

@@ -32,7 +32,7 @@ app.use(flash());
 app.use(session({//session配置项,有key,store,cookie,//该实例必须是一个EventEmitter，有destory,set,get等方法，connect-mongo是实现这些方法的实例
     secret:settings.cookieSecret,
     store:new MongoStore({
-        db:settings.db
+        url:'mongodb://localhost:27017'
     }),
     resave:true,
     saveUninitialized:true

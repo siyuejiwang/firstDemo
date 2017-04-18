@@ -21,146 +21,63 @@ var crypto = require('crypto');
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 
-router.post("/logIn",function(req,res){
+// router.post('/signup',checkNotLogin);
+router.post("/signup",function(req,res){
+    //生成口令的散列值
     var md5 = crypto.createHash('md5');
     var password = md5.update(req.body.password).digest('base64');
 
-    User.get(req.body.username,function(err,user){
-        if(!user){
-            res.send('用户名不存在');
-        }
-        if(user.password!=password){
-            res.send('密码错误');
-        }
+    var newUser = new User({
+        name : req.body.name,
+        email: req.body.email,
+        password: password
+    });
 
+    //检查用户名是否已经存在
+    User.get(newUser.name,function(err,user){
+        console.log("fuck kiss my ass");
+        if(user){
+            err = 'Username already exists.';
+        }
+        if(err){
+            req.flash('error',err);
+            console.log("err");
+            return res.send({code:500,message:'服务器内部错误'});
+        }
+        console.log("save");
+        //如果不存在则新增用户
+        newUser.save(function(err){
+            if(err){
+                req.flash('error',err);
+                console.log("save err");
+                console.log(err);
+                return res.send({code:501,message:'写入数据库错误'});
+            }
+            req.session.user = newUser;
+            req.flash('success','注册成功');
+            return res.send({code:200,message:'注册成功'});
+        });
+        
     });
 });
-// router.get('/',function(req, res) {
-//   Post.get(null,function(err,posts){
-//     if(err){
-//         posts = [];
-//     }
-//     res.render('index',{
-//         title:'首页',
-//         posts:posts
-//     });
-//   });
-// });
 
-// router.get("/u/:user",function(req,res){
-//     User.get(req.params.user,function(err,user){
-//         if(!user){
-//             req.flash('error','用户不存在');
-//             return res.redirect('/');
-//         }
-
-//         Post.get(user.name,function(err,posts){
-//             if(err){
-//                 req.flash('error',err);
-//                 return res.redirect('/');
-//             }
-//             res.render('user',{
-//                 title:user.name,
-//                 posts:posts
-//             });
-
-//         });
-//     });
-// });
-
-// router.post('/signIn',checkLogin);
-// router.post("/post",function(req,res){
-//     var currentUser = req.session.user;
-//     var post = new Post(currentUser.name,req.body.post);
-//     post.save(function(err){
-//         if(err){
-//             req.flash('error',err);
-//             return res.redirect('/');
-//         }
-
-//         req.flash('success','发表成功');
-//         console.log(currentUser);
-//         res.redirect('/u/'+currentUser.name);
-//     });
-// });
-
-// router.get('/reg',checkNotLogin);
-// router.get('/reg',function(req,res){
-//     res.render('reg',{
-//         title:"用户注册"
-//     });
-// });
-
-// router.post('/reg',checkNotLogin);
-// router.post("/reg",function(req,res){
-//     console.log(req.body);
-//     //检验用户两次输入口令是否一致
-//     if(req.body['password-repeat']!=req.body['password']){
-//         req.flash('error','两次输入的口令不一致');
-//         return res.redirect('/reg');
-//     }
-
-//     //生成口令的散列值
-//     var md5 = crypto.createHash('md5');
-//     var password = md5.update(req.body.password).digest('base64');
-
-//     var newUser = new User({
-//         name : req.body.username,
-//         password:password
-//     });
-
-//     //检查用户名是否已经存在
-//     User.get(newUser.name,function(err,user){
-//         if(user){
-//             err = 'Username already exists.';
-//         }
-//         if(err){
-//             req.flash('error',err);
-//             console.log("err");
-//             return res.redirect('/reg');
-//         }
-//         console.log("save");
-//         //如果不存在则新增用户
-//         newUser.save(function(err){
-//             if(err){
-//                 req.flash('error',err);
-//                 console.log("save err");
-//                 console.log(err);
-//                 return res.redirect('/reg');
-//             }
-//             req.session.user = newUser;
-//             req.flash('success','注册成功');
-//             return res.redirect('/');
-//         });
-        
-//     });
-// });
-
-// router.get('/login',checkNotLogin);
-// router.get("/login",function(req,res){
-//     res.render('login',{
-//         title:'用户登入'
-//     });
-// });
-
-router.post('/login',checkNotLogin);
+// router.post('/login',checkNotLogin);
 router.post("/login",function(req,res){
-    //生成口令的散列值
     var md5 = crypto.createHash('md5');
     var password = md5.update(req.body.password).digest('base64');
 
     User.get(req.body.username,function(err,user){
         if(!user){
             req.flash('error','用户不存在');
-            return res.redirect('/login');
+            return res.send({code: 500,message:'用户名不存在'});
         }
         if(user.password!=password){
             req.flash('error','用户口令错误');
-            return res.redirect('/login');
+            return res.send({code: 501,message:'密码错误'});
         }
         req.session.user = user;
         req.flash('success','登入成功');
-        res.redirect('/');
+        res.send({code: 200,message:'登录成功',user: user});
     });
 });
 
