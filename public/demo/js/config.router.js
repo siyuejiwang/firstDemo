@@ -39,8 +39,12 @@ angular.module('app')
                   templateUrl: 'tpl/app_dashboard_v1.html',
                   resolve: {
                     deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['js/controllers/chart.js']);
+                      function( $ocLazyLoad){
+                        return $ocLazyLoad.load('toaster').then(
+                            function(){
+                               return $ocLazyLoad.load('js/controllers/chart.js');
+                            }
+                        );
                     }]
                   }
               })

@@ -1,0 +1,53 @@
+$ git init 初始化一个仓库
+$ git add xx.txt
+$ git commit -m "descripption"
+
+
+$ git status 可以掌握仓库当前的状态
+$ git diff xxx.txt  可以查看某文件具体改了什么内容  ,diff顾名思义difference
+
+$ git log 显示提交日志  --pretty=oneline  防止看的眼花缭乱的
+$ git reset --hard HEAD^          ^上个版本  ^^上上个版本 ~100 当前往上100个版本
+
+$ git reset --hard 3633233    一串数字是git 自动生成的commit id  没必要写全
+
+$ git reflog 记录每一次命令
+
+$ git checkout --file  撤销修改  add 之后修改返回add时的状态，还没add返回没修改的状态   也就是丢弃工作区的修改
+
+$ git reset HEAD file   把添加到暂存区的修改撤销掉    修改之后add    HEAD表示返回最新版本
+
+场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+
+场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令git reset HEAD file，就回到了场景1，第二步按场景1操作。
+
+场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+
+$ git rm test.txt   删除本地的后删除版本库中的   git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
+
+
+git工具里面administrator文件夹
+$ ssh-keygen -t rsa -C "youremail@example.com"
+
+git remote add origin git@server-name:path/repo-name.git
+git push -u origin master
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+
+https://git-scm.com/book/zh/v2/Git-%E5%9F%BA%E7%A1%80-%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8
+
+//方法一
+$ git fetch origin master //从远程的origin仓库的master分支下载代码到本地的origin master
+
+$ git log -p master.. origin/master//比较本地的仓库和远程参考的区别
+
+$ git merge origin/master//把远程下载下来的代码合并到本地仓库，远程的和本地的合并
+
+//方法二
+$ git fetch origin master:temp //从远程的origin仓库的master分支下载到本地并新建一个分支temp
+
+$ git diff temp//比较master分支和temp分支的不同
+
+$ git merge temp//合并temp分支到master分支
+
+$ git branch -d temp//删除temp

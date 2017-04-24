@@ -20,6 +20,7 @@ var router = express.Router();
 var crypto = require('crypto');
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
+var nodemail = require('../models/email.js');
 
 // router.post('/signup',checkNotLogin);
 router.post("/signup",function(req,res){
@@ -78,6 +79,23 @@ router.post("/login",function(req,res){
         req.session.user = user;
         req.flash('success','登入成功');
         res.send({code: 200,message:'登录成功',user: user});
+    });
+});
+
+router.post("/sendemail",function(req,res){
+    var mailOptions = {
+        from: '1170867221@qq.com',
+        to: req.body.to.join(','),
+        subject: req.body.subject,
+        text: req.body.content,
+        html: '<b>Hello world</b>'
+    };
+    nodemail.sendMail(mailOptions, function(error,info){
+        if(error){
+            return console.log(error);
+            res.send({code: 500,message:'服务器内部错误'});
+        }
+        res.send({code: 200,message:'Message sent: ' + info.response});
     });
 });
 

@@ -12,7 +12,7 @@ app.controller('SignupFormController', ['$scope', '$http', '$state', function($s
         if ( response.data.code==200 ) {
           $state.go('access.signin');
         }else{
-          $scope.authError = response;
+          $scope.authError = response.data.message;
         }
       }, function(x) {
         $scope.authError = 'Server Error';
