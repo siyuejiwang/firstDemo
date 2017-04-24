@@ -7,12 +7,13 @@
     </div>
   </div>
   <!-- / header -->
+  <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
   <div class="wrapper">
     <form name="newMail" class="form-horizontal m-t-lg">
       <div class="form-group">
         <label class="col-lg-2 control-label">To:</label>
         <div class="col-lg-8">
-          <select ui-jq="chosen" data-placeholder="Choose email" class="form-control" multiple ng-model="mail.to">
+          <select ui-jq="chosen" data-placeholder="Choose email" class="form-control" multiple ng-model="mail.to" required>
             <option ng-repeat="list in tolist" value="{{list.email}}">{{list.name}} <{{list.email}}></option>
           </select>
         </div>
@@ -20,7 +21,7 @@
       <div class="form-group">
         <label class="col-lg-2 control-label">Subject:</label>
         <div class="col-lg-8">
-          <input type="text" class="form-control" ng-model="mail.subject">
+          <input type="text" class="form-control" ng-model="mail.subject" required>
         </div>
       </div>
       <div class="form-group">
@@ -61,14 +62,14 @@
               <a class="btn btn-sm btn-default" data-edit="justifyfull" tooltip="Justify (Ctrl/Cmd+J)"><i class="fa text-base fa-align-justify"></i></a>
             </div>
           </div>
-          <div ui-jq="wysiwyg" class="form-control h-auto" style="min-height:200px;">
+          <div id="content" ui-jq="wysiwyg" class="form-control h-auto" style="min-height:200px;" required ng-model="mail.content">
             Go ahead&hellip;
           </div>
         </div>
       </div>
       <div class="form-group">
         <div class="col-lg-8 col-lg-offset-2">
-          <button class="btn btn-info w-xs">Send</button>
+          <button class="btn btn-info w-xs" ng-disabled='form.$invalid || loading' ng-click="send()">Send</button>
         </div>
       </div>
     </form>

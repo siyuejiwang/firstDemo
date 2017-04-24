@@ -1,0 +1,9 @@
+{
+  "apps" : [{
+    "script"      : "./bin/www",
+    "watch"       : true,
+    "watch_options": {
+      "usePolling": true
+    }
+  }]
+}

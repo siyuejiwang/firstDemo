@@ -50,17 +50,29 @@ app.controller('MailDetailCtrl', ['$scope', 'mails', '$stateParams', function($s
   })
 }]);
 
-app.controller('MailNewCtrl', ['$scope', function($scope) {
+app.controller('MailNewCtrl', ['$scope','$http','toaster',function($scope,$http,toaster) {
   $scope.mail = {
     to: '',
     subject: '',
     content: ''
   }
   $scope.tolist = [
-    {name: 'James', email:'james@gmail.com'},
+    {name: 'mengfanyue', email:'siyuejiwang@163.com'},
     {name: 'Luoris Kiso', email:'luoris.kiso@hotmail.com'},
     {name: 'Lucy Yokes', email:'lucy.yokes@gmail.com'}
   ];
+  $scope.send = function(){
+      $scope.loading = true;
+      var url="http://127.0.0.1:3000/sendemail";
+      $http.post(url, {to: $scope.mail.to, subject: $scope.mail.subject, content: $("#content").text()})
+      .then(function(response) {
+          toaster.pop('success', '发送状态', response.data.message);
+          $scope.loading = false;
+      }, function(x) {
+        $scope.authError = 'Server Error';
+        $scope.loading = false;
+      });
+  };
 }]);
 
 angular.module('app').directive('labelColor', function(){

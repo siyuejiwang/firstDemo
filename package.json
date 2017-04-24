@@ -18,6 +18,11 @@
     "mongodb": "^1.4.19",
     "morgan": "~1.7.0",
     "nodemailer": "^4.0.1",
+<<<<<<< HEAD
     "serve-favicon": "~2.3.2"
+=======
+    "serve-favicon": "~2.3.2",
+    "ueditor": "^1.2.2"
+>>>>>>> origin/master
   }
 }
