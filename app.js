@@ -14,7 +14,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
-
+var ueditor = require("ueditor");
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));//path.join的用途在于正确使用系统的路径分隔符
 app.set('view engine', 'ejs');
@@ -23,7 +23,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser(settings.cookieSecret));
 app.use(express.static(path.join(__dirname, 'public')));

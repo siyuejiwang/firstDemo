@@ -472,6 +472,23 @@ angular.module('app')
                       }]
                   }
               })
+              .state('apps.blog', {
+                  url: '/blog',
+                  templateUrl: 'tpl/apps_blog.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad ){
+                          return uiLoad.load( ['js/app/blog/blog.js',
+                              'ueditor/themes/default/css/umeditor.css',
+                              'ueditor/third-party/jquery.min.js',
+                              'ueditor/third-party/template.min.js',
+                              'ueditor/umeditor.config.js',
+                              'ueditor/umeditor.min.js',
+                              'ueditor/lang/zh-cn/zh-cn.js',
+                            ] );
+                      }]
+                  }
+              })
               .state('apps.contact', {
                   url: '/contact',
                   templateUrl: 'tpl/apps_contact.html',

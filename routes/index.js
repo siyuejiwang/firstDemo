@@ -22,6 +22,7 @@ var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var nodemail = require('../models/email.js');
 
+
 // router.post('/signup',checkNotLogin);
 router.post("/signup",function(req,res){
     //生成口令的散列值
