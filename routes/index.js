@@ -1,19 +1,4 @@
-// var express = require('express');
-// var router = express.Router();
-// var util = require('util');
 
-// /* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
-
-// router.get('/hello', function(req, res, next) {
-//   res.send(util.inspect(req));
-//   res.cookie('monster','xxx',{signed: true,maxAge:毫秒数,httpOnly:  })
-//   res.clearCookie('monster');
-// });
-// module.exports = router;
-//上面是框架开始自带的
 
 var express = require('express');
 var router = express.Router();
@@ -98,6 +83,37 @@ router.post("/sendemail",function(req,res){
         }
         res.send({code: 200,message:'Message sent: ' + info.response});
     });
+});
+
+router.post("/postblog",function(req,res){
+    var NewPost = new Post({
+        title: req.body.title,
+        text: req.body.text,
+        html: req.body.html,
+    });
+
+    NewPost.save(function(err){
+        console.log('xxx');
+        if(err){
+            req.flash('error',err);
+            console.log("save err");
+            console.log(err);
+            return res.send({code:501,message:'写入数据库错误'});
+        }
+        return res.send({code:200,message:'保存成功'});
+    });
+    
+});
+
+router.get("/postblog",function(req,res){
+    Post.get(function(err,data){
+        if(err){
+            console.log(err);
+            return res.send({code:501,message:'读取数据失败'});
+        }
+        return res.send({code:200,lists: data});
+    });
+    
 });
 
 router.get("/logout",checkLogin);
