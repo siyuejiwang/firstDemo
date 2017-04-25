@@ -11,12 +11,12 @@
       <div class="blog-post">                   
         <div class="panel" ng-repeat="blog in vm.bloglists">
           <div>
-            <img src="" class="img-full" ng-src="blog.src">
+            <img src="" class="img-full" ng-src="blog.src" ng-if="blog.src">
           </div>
           <div class="wrapper-lg">
             <h2 class="m-t-none"><a href ng-bind="blog.title"></a></h2>
             <div>
-              <p ng-bind="blog.htmlText"></p>
+              <p ng-bind-html="blog.html"></p>
             </div>
             <div class="line line-lg b-b b-light"></div>
             <div class="text-muted">

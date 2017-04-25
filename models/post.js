@@ -10,7 +10,7 @@ module.exports = Post;
 
 Post.prototype.save = function save(callback){
 	//存入Mongodb的文档
-	var post = {
+	var data = {
 		title:this.title,
 		text:this.text,
 		html:this.html,
@@ -31,7 +31,7 @@ Post.prototype.save = function save(callback){
 			//为user属性添加索引
 			// collection.ensureIndex('user',function(err){
 				//写入post文档
-				collection.insert(post,{safe:true},function(err,post){
+				collection.insert(data,{safe:true},function(err,post){
 					mongodb.close();
 					callback(err,post);
 				});
@@ -63,10 +63,7 @@ Post.get = function get(callback){
 				var posts = [];
 				docs.forEach(function(doc,index){
 					// var post = new Post(doc.username,doc.post,doc.time);
-					posts.push({
-                        title: doc.title,
-                        text: doc.text
-                    });
+					posts.push(doc.title);
 				});
 				callback(null,posts);
 			});
