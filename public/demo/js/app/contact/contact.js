@@ -1,23 +1,32 @@
 app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-  $http.get('js/app/contact/contacts.json').then(function (resp) {
-    $scope.items = resp.data.items;
-    $scope.item = $filter('orderBy')($scope.items, 'first')[0];
-    $scope.item.selected = true;
-  });
+  // $http.get('js/app/contact/contacts.json').then(function (resp) {
+  //   $scope.items = resp.data.items;
+  //   $scope.item = $filter('orderBy')($scope.items, 'first')[0];
+  //   $scope.item.selected = true;
+  // });
+  $scope.items = [];
+
 
   $scope.filter = '';
   $scope.groups = [
-    {name: 'Coworkers'}, 
-    {name: 'Family'}, 
-    {name: 'Friends'}, 
-    {name: 'Partners'}, 
-    {name: 'Group'}
+    // {name: 'Coworkers'}, 
+    // {name: 'Family'}, 
+    // {name: 'Friends'}, 
+    // {name: 'Partners'}, 
+    // {name: 'Group'}
   ];
 
   $scope.createGroup = function(){
     var group = {name: 'New Group'};
     group.name = $scope.checkItem(group, $scope.groups, 'name');
     $scope.groups.push(group);
+
+    angular.forEach($scope.groups, function(item) {
+      item.selected = false;
+    });
+    $scope.group = group;
+    $scope.group.selected = true;
+    $scope.filter = group.name;
   };
 
   $scope.checkItem = function(obj, arr, key){
@@ -65,7 +74,7 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
 
   $scope.createItem = function(){
     var item = {
-      group: 'Friends',
+      group: $scope.filter,
       avatar:'img/a0.jpg'
     };
     $scope.items.push(item);
@@ -75,12 +84,18 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
 
   $scope.editItem = function(item){
     if(item && item.selected){
+      item.staticName = item.name;
       item.editing = true;
     }
   };
 
   $scope.doneEditing = function(item){
     item.editing = false;
+    $scope.items.fogrouprEach(function(ite,index){
+      if(ite.group == item.staticName){
+        ite.group = item.name;
+      }
+    });
   };
 
 }]);
