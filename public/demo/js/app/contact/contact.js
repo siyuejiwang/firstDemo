@@ -1,20 +1,33 @@
 app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
-  // $http.get('js/app/contact/contacts.json').then(function (resp) {
-  //   $scope.items = resp.data.items;
-  //   $scope.item = $filter('orderBy')($scope.items, 'first')[0];
-  //   $scope.item.selected = true;
-  // });
-  $scope.items = [];
+  var Fn = function(){
+    var loadData = function(){
+      var url="http://127.0.0.1:3000/ptcontact";
+      $http.get(url)
+      .then(function(response) {
+        if ( response.data.code==200 ) {
+          $scope.groups = response.data.data.groups || [];
+          $scope.items = response.data.data.contacts || [];
+          console.log('保存成功');
+        }else{
+          $scope.authError = response.data.message;
+        }
+      }, function(x) {
+        $scope.authError = 'Server Error';
+      });
+    };
+    loadData();
+  }();
+  // $scope.items = [];
 
 
   $scope.filter = '';
-  $scope.groups = [
-    // {name: 'Coworkers'}, 
-    // {name: 'Family'}, 
-    // {name: 'Friends'}, 
-    // {name: 'Partners'}, 
-    // {name: 'Group'}
-  ];
+  // $scope.groups = [
+  //   // {name: 'Coworkers'}, 
+  //   // {name: 'Family'}, 
+  //   // {name: 'Friends'}, 
+  //   // {name: 'Partners'}, 
+  //   // {name: 'Group'}
+  // ];
 
   $scope.createGroup = function(){
     var group = {name: 'New Group'};
@@ -91,11 +104,29 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
 
   $scope.doneEditing = function(item){
     item.editing = false;
-    $scope.items.fogrouprEach(function(ite,index){
-      if(ite.group == item.staticName){
-        ite.group = item.name;
-      }
-    });
+    if(item.group){
+      var url="http://127.0.0.1:3000/ptcontact";
+      $http.post(url, {contact: item})
+      .then(function(response) {
+        if ( response.data.code==200 ) {
+          console.log('保存成功');
+        }else{
+          $scope.authError = response.data.message;
+        }
+      }, function(x) {
+        $scope.authError = 'Server Error';
+      });
+    }else{
+      $scope.filter = item.name;
+      $scope.items.forEach(function(ite,index){
+        if(ite.group == item.staticName){
+          ite.group = item.name;
+        }
+      });
+
+    }
   };
+
+  
 
 }]);

@@ -6,7 +6,7 @@ var crypto = require('crypto');
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var nodemail = require('../models/email.js');
-
+var Contact = require('../models/contact.js');
 
 // router.post('/signup',checkNotLogin);
 router.post("/signup",function(req,res){
@@ -112,6 +112,34 @@ router.get("/postblog",function(req,res){
             return res.send({code:501,message:'读取数据失败'});
         }
         return res.send({code:200,lists: data});
+    });
+    
+});
+
+router.post("/ptcontact",function(req,res){
+    var contact = new Contact(req.body.contact);
+    contact.save(function(err){
+        console.log('xxx');
+        if(err){
+            req.flash('error',err);
+            console.log("save err");
+            console.log(err);
+            return res.send({code:501,message:'写入数据库错误'});
+        }
+        return res.send({code:200,message:'保存成功'});
+    });
+    
+});
+router.get("/ptcontact",function(req,res){
+    Contact.get(function(err,data){
+        console.log('xxx');
+        if(err){
+            req.flash('error',err);
+            console.log("save err");
+            console.log(err);
+            return res.send({code:501,message:'写入数据库错误'});
+        }
+        return res.send({code:200,data:data});
     });
     
 });
