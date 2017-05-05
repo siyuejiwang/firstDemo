@@ -1,5 +1,5 @@
 var mongodb = require("./db");
-
+var BSON = require('mongodb').BSONPure;
 function Contact(item){
     this.item = item;
 };
@@ -22,10 +22,19 @@ Contact.prototype.save = function save(callback){
             //为user属性添加索引
             // collection.ensureIndex('user',function(err){
                 //写入Contact文档
-                collection.insert(item,{safe:true},function(err,contact){
-                    mongodb.close();
-                    callback(err,contact);
-                });
+                if(!item._id){
+                    collection.insert(item,{safe:true},function(err,contact){
+                        mongodb.close();
+                        callback(err,contact);
+                    });
+                }else{
+                    // item._id = BSON.ObjectID.createFromHexString(item._id);
+                    collection.save(item,{safe:true},function(err,contact){
+                        mongodb.close();
+                        callback(err);
+                    });
+                }
+                
             // });
 
         });
@@ -53,18 +62,57 @@ Contact.get = function get(callback){
                 
                 //封装Contacts为Contact对象
                 var data = {
-                   contacts: [] 
-                };
+                   contacts: docs,
+                   groups: []
+                },arr=[];
                 docs.forEach(function(doc,index){
-                    // var Contact = new Contact(doc.username,doc.Contact,doc.time);
-                    data.contacts.push(doc.title);
+                    if(arr.indexOf(doc.group)==-1){
+                        arr.push(doc.group);
+                        data.groups.push({name: doc.group});
+                    }
                 });
-                collection.aggregate([{$group : {name : "$group"}}],function(err,result){
-                    data.groups = result;
-                    callback(null,data);
-                })
+                callback(null,data);
+                // collection.aggregate([{$group : {name : "$group"}}],function(err,result){
+                //     data.groups = result;
+                //     callback(null,data);
+                // })
             });
         });
     });
 };
 
+Contact.deletes = function deletes(item,callback){
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        //读取Contacts集合
+        db.collection('Contacts',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            if(item._id){
+                
+                var obj_id = BSON.ObjectID.createFromHexString(item._id);
+                collection.remove({'_id':obj_id},function(err){
+                    mongodb.close();
+                    if(err){
+                        callback(err);
+                    }else{
+                        callback(null);
+                    }
+                })
+            }else{
+                collection.remove({'group':item.name},function(err){
+                    mongodb.close();
+                    if(err){
+                        callback(err);
+                    }else{
+                        callback(null);
+                    }
+                }) 
+            }
+        });
+    });
+};

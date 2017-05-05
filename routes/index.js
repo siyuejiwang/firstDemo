@@ -64,6 +64,7 @@ router.post("/login",function(req,res){
         }
         req.session.user = user;
         req.flash('success','登入成功');
+        res.cookie('uid', JSON.stringify(user), { httpOnly: false});
         res.send({code: 200,message:'登录成功',user: user});
     });
 });
@@ -118,7 +119,7 @@ router.get("/postblog",function(req,res){
 
 router.post("/ptcontact",function(req,res){
     var contact = new Contact(req.body.contact);
-    contact.save(function(err){
+    contact.save(function(err,ress){
         console.log('xxx');
         if(err){
             req.flash('error',err);
@@ -126,13 +127,14 @@ router.post("/ptcontact",function(req,res){
             console.log(err);
             return res.send({code:501,message:'写入数据库错误'});
         }
-        return res.send({code:200,message:'保存成功'});
+        return res.send({code:200,message: ress});
     });
     
 });
 router.get("/ptcontact",function(req,res){
+    console.log(req);
     Contact.get(function(err,data){
-        console.log('xxx');
+        
         if(err){
             req.flash('error',err);
             console.log("save err");
@@ -140,6 +142,17 @@ router.get("/ptcontact",function(req,res){
             return res.send({code:501,message:'写入数据库错误'});
         }
         return res.send({code:200,data:data});
+    });
+    
+});
+router.post("/dlecontact",checkLogin,function(req,res){
+    Contact.deletes(req.body.item,function(err){
+        console.log('xxx');
+        if(err){
+            console.log(err);
+            return res.send({code:501,message:'写入数据库错误'});
+        }
+        return res.send({code:200,message:'删除成功'});
     });
     
 });
@@ -152,14 +165,15 @@ router.get("/logout",function(req,res){
 });
 
 function checkLogin(req,res,next){
+    console.log(req.session.user);
     if(!req.session.user){
-        req.flash('error',"未登入");
-        return res.redirect('/login');
+        return res.send({code: 5000099});
     }
     next();
 };
 
 function checkNotLogin(req,res,next){
+
     if(req.session.user){
         req.flash("error","已登入");
         return res.redirect('/');

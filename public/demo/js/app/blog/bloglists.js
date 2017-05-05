@@ -6,6 +6,9 @@ app.controller('BlogListsCtrl', ['$scope', '$http','$state',function($scope, $ht
   .then(function(response) {
     if ( response.data.code==200 ) {
       vm.bloglists = response.data.lists;
+      uParse('.blog-post', {
+          rootPath: '../ueditor/'
+      })
     }else{
       $scope.authError = response.data.message;
     }

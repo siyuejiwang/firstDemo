@@ -7,7 +7,23 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
         if ( response.data.code==200 ) {
           $scope.groups = response.data.data.groups || [];
           $scope.items = response.data.data.contacts || [];
+          $scope.filter = $scope.groups[0] && $scope.groups[0].name;
+          $scope.groups[0].selected = true;
           console.log('保存成功');
+        }else{
+          $scope.authError = response.data.message;
+        }
+      }, function(x) {
+        $scope.authError = 'Server Error';
+      });
+    },
+    deleteItem=function(arg,callback){
+      var url="http://127.0.0.1:3000/dlecontact";
+      $http.post(url,{item:arg})
+      .then(function(response) {
+        if ( response.data.code==200 ) {
+          console.log('删除成功');
+          callback();
         }else{
           $scope.authError = response.data.message;
         }
@@ -16,6 +32,9 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
       });
     };
     loadData();
+    return {
+      deleteItem: deleteItem
+    }
   }();
   // $scope.items = [];
 
@@ -58,7 +77,10 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
   };
 
   $scope.deleteGroup = function(item){
-    $scope.groups.splice($scope.groups.indexOf(item), 1);
+    Fn.deleteItem(item,function(){
+      $scope.groups.splice($scope.groups.indexOf(item), 1);
+    });
+    
   };
 
   $scope.selectGroup = function(item){    
@@ -80,9 +102,12 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
   };
 
   $scope.deleteItem = function(item){
-    $scope.items.splice($scope.items.indexOf(item), 1);
-    $scope.item = $filter('orderBy')($scope.items, 'first')[0];
-    if($scope.item) $scope.item.selected = true;
+    Fn.deleteItem(item,function(){
+      $scope.items.splice($scope.items.indexOf(item), 1);
+      $scope.item = $filter('orderBy')($scope.items, 'first')[0];
+      if($scope.item) $scope.item.selected = true;
+    });
+    
   };
 
   $scope.createItem = function(){
@@ -104,12 +129,15 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
 
   $scope.doneEditing = function(item){
     item.editing = false;
+    var copy = angular.copy(item);
+    copy.selected = false;
     if(item.group){
       var url="http://127.0.0.1:3000/ptcontact";
-      $http.post(url, {contact: item})
+      $http.post(url, {contact: copy})
       .then(function(response) {
         if ( response.data.code==200 ) {
           console.log('保存成功');
+          item._id = response.data.message[0]._id;
         }else{
           $scope.authError = response.data.message;
         }

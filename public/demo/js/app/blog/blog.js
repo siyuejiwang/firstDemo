@@ -1,6 +1,9 @@
 app.controller('BlogCtrl', ['$scope', '$http','$state', function($scope, $http,$state) {
   var vm =this;
   var ue = UE.getEditor('myEditor');
+  $scope.$on('$destroy', function() {
+      ue.destroy();
+  });
   vm.saveBLog = function(){
      var text = ue.getPlainTxt();
      // var html = ue.getAllHtml();

@@ -14,7 +14,7 @@
         <div class="cell scrollable hover">
           <div class="cell-inner">
             <div class="list-group no-radius no-border no-bg m-b-none">
-              <a class="list-group-item b-b" ng-class="{'focus': (filter == '')}" ng-click="selectGroup({name:''})">ALL Contacts</a>
+              <!-- <a class="list-group-item b-b" ng-class="{'focus': (filter == '')}" ng-click="selectGroup({name:''})">ALL Contacts</a> -->
               <a ng-repeat="item in groups" ng-dblclick="editItem(item)" class="list-group-item m-l hover-anchor b-a no-select" ng-class="{'focus m-l-none': item.selected}" ng-click="selectGroup(item)">
                 <span ng-click='deleteGroup(item)' class="pull-right text-muted hover-action"><i class="fa fa-times"></i></span>
                 <span class="block m-l-n" ng-class="{'m-n': item.selected }">{{ item.name ? item.name : 'Untitled' }}</span>
@@ -71,10 +71,10 @@
         <div class="m-t-n-xxs m-b-n-xxs m-l-xs">
           <a class="btn btn-xs btn-default pull-right" ng-hide="!item" ng-click="deleteItem(item)"><i class="fa fa-times"></i></a>
           <a class="btn btn-xs btn-default" ng-hide="item.editing" ng-click="editItem(item)">Edit</a>
-          <a class="btn btn-xs btn-default" ng-show="item.editing" ng-click="doneEditing(item)">Done</a>
+          <a class="btn btn-xs btn-default" ng-show="item.editing" ng-disabled="inputForm.$invalid" ng-click="doneEditing(item)">Done</a>
         </div>
       </div>
-      <div class="row-row">
+      <form class="row-row" name="inputForm">
         <div class="cell">
           <div class="cell-inner">
             <div class="wrapper-lg">
@@ -87,8 +87,8 @@
                 <div class="col v-middle h1 font-thin">
                   <div ng-hide="item.editing">{{item.first}} {{item.last}}</div>
                   <div ng-show="item.editing">
-                    <input type="text" placeholder="First" class="form-control w-auto input-lg m-b-n-xxs font-bold" ng-model="item.first" >
-                    <input type="text" placeholder="Last" class="form-control w-auto input-lg font-bold" ng-model="item.last" >
+                    <input type="text" placeholder="First" class="form-control w-auto input-lg m-b-n-xxs font-bold" ng-model="item.first" required>
+                    <input type="text" placeholder="Last" class="form-control w-auto input-lg font-bold" ng-model="item.last" required>
                   </div>
                 </div>
               </div>
@@ -98,35 +98,35 @@
                   <label class="col-sm-3 control-label">Mobile</label>
                   <div class="col-sm-9">
                     <p class="form-control-static" ng-hide="item.editing">{{item.mobile}}</p>
-                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.mobile" >
+                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.mobile" required>
                   </div>
                 </div>
                 <div class="form-group m-b-sm" ng-hide="!item.home && !item.editing">
                   <label class="col-sm-3 control-label">Home</label>
                   <div class="col-sm-9">
                     <p class="form-control-static" ng-hide="item.editing">{{item.home}}</p>
-                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.home" >
+                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.home" required>
                   </div>
                 </div>
                 <div class="form-group m-b-sm" ng-hide="!item.work && !item.editing">
                   <label class="col-sm-3 control-label">Work</label>
                   <div class="col-sm-9">
                     <p class="form-control-static" ng-hide="item.editing">{{item.work}}</p>
-                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.work" >
+                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.work" required>
                   </div>
                 </div>
                 <div class="form-group m-b-sm" ng-hide="!item.company && !item.editing">
                   <label class="col-sm-3 control-label">Company</label>
                   <div class="col-sm-9">
                     <p class="form-control-static" ng-hide="item.editing">{{item.company}}</p>
-                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.company" >
+                    <input type="text" class="form-control" ng-show="item.editing" ng-model="item.company" required>
                   </div>
                 </div>
                 <div class="form-group m-b-sm" ng-hide="!item.note && !item.editing">
                   <label class="col-sm-3 control-label">Note</label>
                   <div class="col-sm-9">
                     <p class="form-control-static" ng-hide="item.editing">{{item.note}}</p>
-                    <textarea class="form-control" ng-show="item.editing" ng-model="item.note" rows="5"></textarea>
+                    <textarea class="form-control" ng-show="item.editing" ng-model="item.note" rows="5" required></textarea>
                   </div>
                 </div>
               </div>
@@ -134,7 +134,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
   <!-- /column -->

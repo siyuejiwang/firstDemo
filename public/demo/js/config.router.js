@@ -13,7 +13,14 @@ angular.module('app')
             if(toState.name=='access.signin' || toState.name=='access.signup')return;// 如果是进入登录界面则允许
             // 如果用户不存在
             // if(!$rootScope.user || !$rootScope.user.token){
-              if(!$rootScope.user){
+              function getCookie(name){
+                var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+                if(arr=document.cookie.match(reg))
+                return unescape(arr[2]);
+                else
+                return null;
+              }
+              if(!getCookie('uid')){
               event.preventDefault();// 取消默认跳转行为
               // $state.go("access.signin",{from:fromState.name,w:'notLogin'});//跳转到登录界面
               $state.go("access.signin",{});
@@ -481,7 +488,8 @@ angular.module('app')
                           return uiLoad.load( ['js/app/blog/blog.js',
                               '../ueditor/ueditor.config.js',
                               '../ueditor/ueditor.all.min.js',
-                              '../ueditor/lang/zh-cn/zh-cn.js'
+                              '../ueditor/lang/zh-cn/zh-cn.js',
+                              '../ueditor/ueditor.parse.js'
                             ] );
                       }]
                   }
@@ -492,7 +500,8 @@ angular.module('app')
                   resolve: {
                       deps: ['uiLoad',
                         function( uiLoad ){
-                          return uiLoad.load( ['js/app/blog/bloglists.js'
+                          return uiLoad.load( ['js/app/blog/bloglists.js',
+                            '../ueditor/ueditor.parse.js'
                             ] );
                       }]
                   }
