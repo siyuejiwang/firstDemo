@@ -1,0 +1,44 @@
+
+<div class="hbox hbox-auto-xs bg-light " ng-init="
+  app.settings.asideFixed = true;
+  app.settings.asideDock = false;
+  app.settings.container = false;
+  app.hideAside = false;
+  app.hideFooter = true;
+  " ng-controller="BlogsimCtrl as vm">
+  <div class="col">
+    <div class="vbox">
+      <div class="wrapper bg-light lt b-b">
+        <span class="text-muted">Created on:</span> <span>{{ note.date  | date:'MMM-dd-yyyy H:mm' }}</span>
+        <button type="submit" class="btn btn-success" style="float:right;margin-top:-5px" ng-click="vm.saveBLog()">保存</button>
+        <!-- <div class="m-l inline dropdown" dropdown>
+          <a class="v-middle pos-rlt inline bg-{{note.color}}" dropdown-toggle style="width:16px;height:16px;top:-2px"></a>
+          <div class="dropdown-menu animated fadeInUp w wrapper">
+            <a ng-repeat="color in colors" class="inline m-xs bg-{{color}}" style="width:18px;height:18px" ng-click=" note.color = color "></a>
+          </div>
+        </div> -->
+      </div>
+      <div class="row-row">
+        <div class="cell">
+          <div class="cell-inner">
+            <div class="form-control no-radius no-border no-bg wrapper-lg text-md" style="height:100%;">
+                <form name="step1" class="form-validation">
+                  <p>标题:</p>
+                  <input type="text" name="title" class="form-control" ng-model="title" required>
+                  <p class="m-t">正文:</p>
+                  <!-- <input type="url" name="url" placeholder="http://" class="form-control" ng-model="website" required>
+                  <div class="m-t m-b">
+                    <button type="submit" ng-disabled="step1.$invalid" class="btn btn-default btn-rounded" ng-click="steps.step2=true">Next</button>
+                  </div> -->
+                  <textarea id="simde">
+                    
+                  </textarea>
+                </form>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

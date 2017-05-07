@@ -65,6 +65,7 @@ router.post("/login",function(req,res){
         req.session.user = user;
         req.flash('success','登入成功');
         res.cookie('uid', JSON.stringify(user), { httpOnly: false});
+        res.cookie('uname', user.name, { httpOnly: true});
         res.send({code: 200,message:'登录成功',user: user});
     });
 });
@@ -91,6 +92,8 @@ router.post("/postblog",function(req,res){
         title: req.body.title,
         text: req.body.text,
         html: req.body.html,
+        user: req.cookies.uname,
+        _id: req.body._id
     });
 
     NewPost.save(function(err){
@@ -104,10 +107,21 @@ router.post("/postblog",function(req,res){
         return res.send({code:200,message:'保存成功'});
     });
     
+});   //deleteblog
+
+router.post("/deleteblog",function(req,res){
+    Post.deletes(req.body.id,function(err,data){
+        if(err){
+            console.log(err);
+            return res.send({code:501,message:'删除失败'});
+        }
+        return res.send({code:200,message:'删除成功'});
+    });
+    
 });
 
 router.get("/postblog",function(req,res){
-    Post.get(function(err,data){
+    Post.get(req.cookies.uname,req.query.page,function(err,data){
         if(err){
             console.log(err);
             return res.send({code:501,message:'读取数据失败'});
@@ -116,7 +130,16 @@ router.get("/postblog",function(req,res){
     });
     
 });
-
+router.post("/getblogText",function(req,res){
+    Post.getData(req.body.id,function(err,obj){
+        if(err){
+            console.log(err);
+            return res.send({code:501,message:'写入数据库错误'});
+        }
+        return res.send({code:200,data:obj});
+    });
+    
+});
 router.post("/ptcontact",function(req,res){
     var contact = new Contact(req.body.contact);
     contact.save(function(err,ress){
@@ -144,7 +167,9 @@ router.get("/ptcontact",function(req,res){
         return res.send({code:200,data:data});
     });
     
-});
+});//
+
+
 router.post("/dlecontact",checkLogin,function(req,res){
     Contact.deletes(req.body.item,function(err){
         console.log('xxx');

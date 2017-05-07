@@ -494,6 +494,35 @@ angular.module('app')
                       }]
                   }
               })
+              .state('apps.blogedit', {
+                  url: '/blog/:id',
+                  templateUrl: 'tpl/apps_blog.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad ){
+                          return uiLoad.load( ['js/app/blog/blog.js',
+                              '../ueditor/ueditor.config.js',
+                              '../ueditor/ueditor.all.min.js',
+                              '../ueditor/lang/zh-cn/zh-cn.js',
+                              '../ueditor/ueditor.parse.js'
+                            ] );
+                      }]
+                  }
+              })
+              .state('apps.blogsim', {
+                  url: '/blogsim',
+                  templateUrl: 'tpl/apps_blogsim.html',
+                  resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad ){
+                          return uiLoad.load( ['js/app/blog/blogsimple.js',
+                              '../simplemde/simplemde.min.css',
+                              '../simplemde/simplemde.min.js',
+                              '../simplemde/marked.min.js'
+                            ] );
+                      }]
+                  }
+              })
               .state('apps.bloglists', {
                   url: '/bloglists',
                   templateUrl: 'tpl/apps_bloglists.html',
