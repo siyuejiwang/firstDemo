@@ -2,27 +2,39 @@ app.controller('BlogListsCtrl', ['$scope', '$http','$state',function($scope, $ht
   var vm = this;
   vm.bloglists = [];
   vm.paginations = [];
+  vm.currentPage = 1;
   var init = function(){
     var url="http://127.0.0.1:3000/postblog";
-    $http.get(url)
+    $http({
+      method: 'GET',
+      url: url,
+      params: {'page': vm.currentPage}
+    })
     .then(function(response) {
+      vm.paginations = [];
       if ( response.data.code==200 ) {
         vm.bloglists = response.data.lists;
-        //vm.totalPage = response.data.totalPage;
-        vm.totalPage = 13;
+        vm.totalPage = vm.bloglists[0] && vm.bloglists[0].num;
+        if(vm.totalPage<vm.currentPage) vm.currentPage = vm.totalPage;
         if(vm.totalPage<5){
             for(var i=1;i<vm.totalPage+1;i++){
                 vm.paginations.push({text:i,active:false});
             }
-            vm.paginations[0].active = true;
+            vm.paginations[vm.currentPage-1].active = true;
         }else{
-            vm.paginations = [
-                {text:1,active:true},
-                {text:2,active:false},
-                {text:3,active:false},
-                {text:4,active:false},
-                {text:5,active:false}
-            ];
+            var t = vm.currentPage%5 ? Math.floor(vm.currentPage/5)*5+1: vm.currentPage-4;
+            for(var k=t; k<t+5;k++){
+               if(vm.currentPage == k)
+                vm.paginations.push({text:k,active:true});
+               else  vm.paginations.push({text:k,active:false});
+            }
+            // vm.paginations = [
+            //     {text:1,active:true},
+            //     {text:2,active:false},
+            //     {text:3,active:false},
+            //     {text:4,active:false},
+            //     {text:5,active:false}
+            // ];
         }
         uParse('.blog-post', {
             rootPath: '../ueditor/'
@@ -36,6 +48,8 @@ app.controller('BlogListsCtrl', ['$scope', '$http','$state',function($scope, $ht
   };
   init();
   vm.loadPage = function(x){
+    vm.currentPage = x;
+    init();
     vm.paginations.forEach(function(item,index){
         item.active = false;
         if(item.text == x){
@@ -107,6 +121,7 @@ app.controller('BlogListsCtrl', ['$scope', '$http','$state',function($scope, $ht
       $http.post("http://127.0.0.1:3000/deleteblog",{id:id})
       .then(function(response) {
          if(response.data.code==200){
+            vm.currentPage = 1;
             init();
          }
          

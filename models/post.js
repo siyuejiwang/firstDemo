@@ -71,18 +71,18 @@ Post.get = function get(username,page,callback){
 			}
 			//查找user属性为username的文档，如果sername是null则全部匹配
 			collection.find({user:username}).sort({time:-1}).skip((page-1)*10).limit(10).toArray(function(err,docs){
-				mongodb.close();
+				
 				if(err){
+					mongodb.close();
 					callback(err,null);
 				}else{
 					collection.find({user:username}).count(function(err,num){
+						mongodb.close();
 						var posts = [];
 						docs.forEach(function(doc,index){
 							// var post = new Post(doc.username,doc.post,doc.time);
 							doc.zy = trimHtml(doc.html);
-							doc.num = num;
-							console.log(num);
-							console.log(err);
+							doc.num = (num%10==0)?num/10:Math.ceil(num/10);
 							posts.push(doc);
 						});
 						callback(null,posts);
