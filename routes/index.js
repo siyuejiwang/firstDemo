@@ -189,6 +189,16 @@ router.get("/logout",function(req,res){
     res.redirect('/');
 });
 
+
+router.get("/mfy_blogs",function(req,res){
+    Post.get('mfy',1,function(err,data){
+        if(err){
+            console.log(err);
+            return res.flash('读取数据失败');
+        }
+        return res.render('index',{posts:data});
+    });
+});
 function checkLogin(req,res,next){
     console.log(req.session.user);
     if(!req.session.user){
