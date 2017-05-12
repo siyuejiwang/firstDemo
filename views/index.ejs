@@ -1,28 +1,28 @@
 <% include header.ejs %>
-<h1>介绍</h1>
+<!-- <h1>介绍</h1>
 <div class="footer">
   发现错误？想参与编辑？
   <a href="https://github.com/vuejs/cn.vuejs.org/blob/master/src/v2/guide/index.md" target="_blank">
     在 Github 上编辑此页！
   </a>
-</div>
+</div> -->
 <% posts.forEach(function(post,index){ 
 %>
 	<div class="panel">
 	  <div>
-	    	<img src="" class="img-full" src="<%=post.src%>" ng-if="post.src">
+	    	<img src="" class="img-full" src="<%=post.src%>">
 	  </div>
 	  <div class="wrapper-lg">
-	    	<h2 class="m-t-none"><a href ng-bind="post.title"><%=post.title%></a></h2>
+	    	<h2 class="m-t-none"><a href="/<%=post._id%>"><%=post.title%></a></h2>
 		    <div>
-		      	<p ng-bind-html="post.zy.html"></p>
+		      	<p>
+		      		<%-post.zy.html%>
+		      	</p>
 		    </div>
 		    <div class="line line-lg b-b b-light"></div>
 		    <div class="text-muted">
-			      <i class="fa fa-user text-muted"></i> by <a href class="m-r-sm" ng-bind="post.user"></a>
-			      <i class="fa fa-clock-o text-muted"></i> <span ng-bind="post.time | date:'yyyy-MM-dd HH:mm:ss'"></span>
-			      <a href class="m-l-sm" ng-click="vm.delete(post._id)"><i class="fa fa-trash text-muted"></i> delete</a>
-			      <a href class="m-l-sm" ng-href="#/apps/post/{{post._id}}"><i class="fa fa-file text-muted"></i> edit</a>
+			      <i class="fa fa-user text-muted"></i> by <a href class="m-r-sm"><%=post.user%></a>
+			      <i class="fa fa-clock-o text-muted"></i> <span ng-bind="post.time | date:'yyyy-MM-dd HH:mm:ss'"><%=post.time%></span>
 		    </div>
 	  </div>
 	</div>
