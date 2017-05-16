@@ -1,4 +1,4 @@
-app.controller('BlogsimCtrl', ['$scope', '$http','$state', function($scope, $http,$state) {
+app.controller('BlogsimCtrl', ['$rootScope','$scope', '$http','$state', function($rootScope,$scope, $http,$state) {
   var vm =this;
   var simplemde = new SimpleMDE({ 
     element: $("#simde")[0],
@@ -13,7 +13,7 @@ app.controller('BlogsimCtrl', ['$scope', '$http','$state', function($scope, $htt
      var text = null;
      // var html = ue.getAllHtml();
      var html = marked(simplemde.value());
-     var url="http://127.0.0.1:3000/postblog";
+     var url=$rootScope.settings.apipath+"postblog";
      $http.post(url, {title: $scope.title, text: text,html:html})
      .then(function(response) {
        if ( response.data.code==200 ) {

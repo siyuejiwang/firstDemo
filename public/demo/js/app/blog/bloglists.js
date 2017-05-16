@@ -1,10 +1,10 @@
-app.controller('BlogListsCtrl', ['$scope', '$http','$state',function($scope, $http,$state) {
+app.controller('BlogListsCtrl', ['$rootScope','$scope', '$http','$state',function($rootScope,$scope, $http,$state) {
   var vm = this;
   vm.bloglists = [];
   vm.paginations = [];
   vm.currentPage = 1;
   var init = function(){
-    var url="http://127.0.0.1:3000/postblog";
+    var url=$rootScope.settings.apipath+"postblog";
     $http({
       method: 'GET',
       url: url,
@@ -118,7 +118,7 @@ app.controller('BlogListsCtrl', ['$scope', '$http','$state',function($scope, $ht
     $state.go('apps.blog');
   };
   vm.delete = function(id){
-      $http.post("http://127.0.0.1:3000/deleteblog",{id:id})
+      $http.post($rootScope.settings.apipath+"deleteblog",{id:id})
       .then(function(response) {
          if(response.data.code==200){
             vm.currentPage = 1;

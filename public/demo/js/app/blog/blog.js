@@ -1,4 +1,4 @@
-app.controller('BlogCtrl', ['$scope', '$http','$state','$stateParams', function($scope, $http,$state,$stateParams) {
+app.controller('BlogCtrl', ['$rootScope','$scope', '$http','$state','$stateParams', function($rootScope,$scope, $http,$state,$stateParams) {
   var vm =this;
   var ue = UE.getEditor('myEditor');
   $scope.$on('$destroy', function() {
@@ -8,7 +8,7 @@ app.controller('BlogCtrl', ['$scope', '$http','$state','$stateParams', function(
      var text = ue.getPlainTxt();
      // var html = ue.getAllHtml();
      var html = ue.getContent();
-     var url="http://127.0.0.1:3000/postblog";
+     var url=$rootScope.settings.apipath+"postblog";
      var data=null;
      if(!$stateParams.id){
         vm.data = {
@@ -33,7 +33,7 @@ app.controller('BlogCtrl', ['$scope', '$http','$state','$stateParams', function(
   var Fn = function(){
     var loadData = function(){
        if($stateParams.id){
-          $http.post("http://127.0.0.1:3000/getblogText", {id:$stateParams.id })
+          $http.post($rootScope.settings.apipath+"getblogText", {id:$stateParams.id })
           .then(function(response) {
             if ( response.data.code==200 ) {
               vm.data = response.data.data;

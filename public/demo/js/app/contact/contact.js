@@ -1,7 +1,7 @@
-app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+app.controller('ContactCtrl', ['$rootScope','$scope', '$http', '$filter', function($rootScope,$scope, $http, $filter) {
   var Fn = function(){
     var loadData = function(){
-      var url="http://127.0.0.1:3000/ptcontact";
+      var url=$rootScope.settings.apipath+"ptcontact";
       $http.get(url)
       .then(function(response) {
         if ( response.data.code==200 ) {
@@ -18,7 +18,7 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
       });
     },
     deleteItem=function(arg,callback){
-      var url="http://127.0.0.1:3000/dlecontact";
+      var url=$rootScope.settings.apipath+"dlecontact";
       $http.post(url,{item:arg})
       .then(function(response) {
         if ( response.data.code==200 ) {
@@ -132,7 +132,7 @@ app.controller('ContactCtrl', ['$scope', '$http', '$filter', function($scope, $h
     var copy = angular.copy(item);
     copy.selected = false;
     if(item.group){
-      var url="http://127.0.0.1:3000/ptcontact";
+      var url=$rootScope.settings.apipath+"ptcontact";
       $http.post(url, {contact: copy})
       .then(function(response) {
         if ( response.data.code==200 ) {

@@ -8,7 +8,7 @@ app.controller('SigninFormController', ['$rootScope','$scope', '$http', '$state'
     $scope.login = function() {
       $scope.authError = null;
       // Try to login
-      var url="http://127.0.0.1:3000/login";
+      var url=$rootScope.settings.apipath+"login";
       $http.post(url, {username: $scope.user.username, password: $scope.user.password})
       .then(function(response) {
         if ( response.data.code==200 ) {
