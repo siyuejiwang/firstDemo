@@ -13,7 +13,7 @@ app.controller('BlogsimCtrl', ['$rootScope','$scope', '$http','$state', function
      var text = null;
      // var html = ue.getAllHtml();
      var html = marked(simplemde.value());
-     var url=$rootScope.settings.apipath+"postblog";
+     var url=Apipath+"postblog";
      $http.post(url, {title: $scope.title, text: text,html:html})
      .then(function(response) {
        if ( response.data.code==200 ) {

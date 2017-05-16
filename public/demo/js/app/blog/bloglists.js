@@ -4,7 +4,7 @@ app.controller('BlogListsCtrl', ['$rootScope','$scope', '$http','$state',functio
   vm.paginations = [];
   vm.currentPage = 1;
   var init = function(){
-    var url=$rootScope.settings.apipath+"postblog";
+    var url=Apipath+"postblog";
     $http({
       method: 'GET',
       url: url,
@@ -118,7 +118,7 @@ app.controller('BlogListsCtrl', ['$rootScope','$scope', '$http','$state',functio
     $state.go('apps.blog');
   };
   vm.delete = function(id){
-      $http.post($rootScope.settings.apipath+"deleteblog",{id:id})
+      $http.post(Apipath+"deleteblog",{id:id})
       .then(function(response) {
          if(response.data.code==200){
             vm.currentPage = 1;

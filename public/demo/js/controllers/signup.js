@@ -7,7 +7,7 @@ app.controller('SignupFormController', ['$rootScope','$scope', '$http', '$state'
     $scope.signup = function() {
       $scope.authError = null;
       // Try to create
-      $http.post($rootScope.settings.apipath+'signup', {name: $scope.user.name, email: $scope.user.email, password: $scope.user.password})
+      $http.post(Apipath+'signup', {name: $scope.user.name, email: $scope.user.email, password: $scope.user.password})
       .then(function(response) {
         if ( response.data.code==200 ) {
           $state.go('access.signin');

@@ -56,16 +56,4 @@ angular.module('app')
 // app.config(function ($httpProvider) {
 //     $httpProvider.interceptors.push('UserInterceptor');
 // });
-app.factory('settings', ['$rootScope', function($rootScope) {
-    // supported languages
-    var settings = {
-        assetsPath: '/',
-        globalPath: '/',
-        layoutPath: '/',
-        apipath:'http://59.110.170.167:3000/',
-    };
-
-    $rootScope.settings = settings;
-
-    return settings;
-}]);
+var Apipath = 'http://59.110.170.167:3000/';

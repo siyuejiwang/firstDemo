@@ -1,7 +1,7 @@
 app.controller('ContactCtrl', ['$rootScope','$scope', '$http', '$filter', function($rootScope,$scope, $http, $filter) {
   var Fn = function(){
     var loadData = function(){
-      var url=$rootScope.settings.apipath+"ptcontact";
+      var url=Apipath+"ptcontact";
       $http.get(url)
       .then(function(response) {
         if ( response.data.code==200 ) {
@@ -18,7 +18,7 @@ app.controller('ContactCtrl', ['$rootScope','$scope', '$http', '$filter', functi
       });
     },
     deleteItem=function(arg,callback){
-      var url=$rootScope.settings.apipath+"dlecontact";
+      var url=Apipath+"dlecontact";
       $http.post(url,{item:arg})
       .then(function(response) {
         if ( response.data.code==200 ) {
@@ -132,7 +132,7 @@ app.controller('ContactCtrl', ['$rootScope','$scope', '$http', '$filter', functi
     var copy = angular.copy(item);
     copy.selected = false;
     if(item.group){
-      var url=$rootScope.settings.apipath+"ptcontact";
+      var url=Apipath+"ptcontact";
       $http.post(url, {contact: copy})
       .then(function(response) {
         if ( response.data.code==200 ) {
