@@ -8,7 +8,7 @@ app.controller('BlogCtrl', ['$rootScope','$scope', '$http','$state','$stateParam
      var text = ue.getPlainTxt();
      // var html = ue.getAllHtml();
      var html = ue.getContent();
-     var url=$rootScope.settings.apipath+"postblog";
+     var url=Apipath+"postblog";
      var data=null;
      if(!$stateParams.id){
         vm.data = {
@@ -33,7 +33,7 @@ app.controller('BlogCtrl', ['$rootScope','$scope', '$http','$state','$stateParam
   var Fn = function(){
     var loadData = function(){
        if($stateParams.id){
-          $http.post($rootScope.settings.apipath+"getblogText", {id:$stateParams.id })
+          $http.post(Apipath+"getblogText", {id:$stateParams.id })
           .then(function(response) {
             if ( response.data.code==200 ) {
               vm.data = response.data.data;

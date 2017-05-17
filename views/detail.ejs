@@ -1,0 +1,16 @@
+<% include header.ejs %>
+<div class="Lists">
+    <div class="panel">
+      <div class="wrapper-lg">
+            <h2 class="m-t-none"><a><%= data.title %></a></h2>
+            <div class="mark_tu">
+                <i class="fa fa-clock-o"></i> <span><%= data.time %></span>
+                <i class="fa fa-user ml_1em"></i> by <span><%= data.user %></span>
+            </div>
+            <div>
+                <%- data.html %>
+            </div>
+      </div>
+    </div>
+</div>
+<!-- <% include footer.ejs %> -->

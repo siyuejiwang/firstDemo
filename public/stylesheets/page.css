@@ -1,4 +1,4 @@
-@font-face {
+/*@font-face {
   font-family: "Source Sans Pro";
   src: local("Source Sans Pro"), url("/fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf");
 }
@@ -15,7 +15,7 @@
 @font-face {
   font-family: "Roboto Mono";
   src: local("Roboto Mono"), url("/fonts/Roboto_Mono/RobotoMono-Regular.ttf");
-}
+}*/
 .gutter pre {
   color: #999;
 }
@@ -676,14 +676,19 @@ ul.demo li {
   }
 }
 #header {
-  box-shadow: 0 0 1px rgba(0,0,0,0.25);
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
   transition: background-color 0.3s ease-in-out;
 }
 .content {
   position: relative;
   padding: 2.2em 0;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+}
+.content h2 a {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 24px;
 }
 .content.api > a:first-of-type > h2 {
   margin-top: 0;
@@ -765,6 +770,9 @@ ul.demo li {
 .content ul,
 .content ol {
   padding-left: 1.5em;
+}
+.page-bar ul,.page-bar ol{
+  padding-left: 0;
 }
 .content a {
   color: #42b983;
@@ -928,7 +936,10 @@ ul.demo li {
 }
 
 .page-bar{
-    margin:40px;
+    margin-top:80px;
+}
+.page-bar li{
+  list-style:none;
 }
 .page-bar li:first-child>a {
    margin-left: 0px
@@ -941,7 +952,7 @@ ul.demo li {
     padding: 6px 12px;
     margin-left: -1px;
     line-height: 1.42857143;
-    color: #337ab7;
+    color: #42b983;
     cursor: pointer
 }
 .page-bar a:hover{
@@ -953,12 +964,24 @@ ul.demo li {
 .page-bar .active a{
     color: #fff;
     cursor: default;
-    background-color: #337ab7;
-    border-color: #337ab7;
+    background-color: #42b983;
+    border-color: #42b983;
 }
 .page-bar i{
     font-style:normal;
     color: #d44950;
     margin: 0px 4px;
     font-size: 12px;
+}
+.mark_tu{
+  color: #7f8c8d;
+  font-weight: 600;
+}
+.ml_1em{
+  margin-left: 1em;
+}
+a.r_detail{
+  margin-top: 1em;
+  font-weight: 600;
+  display: inline-block;
 }

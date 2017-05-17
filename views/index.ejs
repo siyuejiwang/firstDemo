@@ -1,43 +1,32 @@
 <% include header.ejs %>
-<!-- <h1>介绍</h1>
-<div class="footer">
-  发现错误？想参与编辑？
-  <a href="https://github.com/vuejs/cn.vuejs.org/blob/master/src/v2/guide/index.md" target="_blank">
-    在 Github 上编辑此页！
-  </a>
-</div> -->
-<% posts.forEach(function(post,index){ 
-%>
-	<div class="panel">
-	  <div>
-	    	<img src="" class="img-full" src="<%=post.src%>">
-	  </div>
-	  <div class="wrapper-lg">
-	    	<h2 class="m-t-none"><a href="/<%=post._id%>"><%=post.title%></a></h2>
-		    <div>
-		      	<p>
-		      		<%-post.zy.html%>
-		      	</p>
-		    </div>
-		    <div class="line line-lg b-b b-light"></div>
-		    <div class="text-muted">
-			      <i class="fa fa-user text-muted"></i> by <a href class="m-r-sm"><%=post.user%></a>
-			      <i class="fa fa-clock-o text-muted"></i> <span ng-bind="post.time | date:'yyyy-MM-dd HH:mm:ss'"><%=post.time%></span>
-		    </div>
-	  </div>
-	</div>
-<% }) %>
-<div id="total" style="display:none"><% =posts[0].num></div>
+<div class="Lists">
+    <div class="panel" v-for="item in items">
+      <div>
+            <img src="" class="img-full" src="{{item.src}}">
+      </div>
+      <div class="wrapper-lg">
+            <h2 class="m-t-none"><a v-cloak>{{item.title}}</a></h2>
+            <div class="mark_tu">
+                <i class="fa fa-clock-o"></i> <span v-cloak>{{item.time | formatDate}}</span>
+                <i class="fa fa-user ml_1em"></i> by <span v-cloak>{{item.user}}</span>
+            </div>
+            <div v-html="item.zy.html">
+            </div>
+            <a :href="'/mfy_blogs/'+item._id" class="r_detail">...reading detail</a>
+      </div>
+    </div>
+</div>
+<div id="total" style="display:none"><%= posts[0].num %></div>
 <div class="page-bar">
     <ul>
         <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
         <li v-if="cur==1"><a class="banclick">上一页</a></li>
         <li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
-            <a v-on:click="btnClick(index)">{{ index }}</a>
+            <a v-on:click="btnClick(index)" v-cloak>{{ index }}</a>
         </li>
         <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
         <li v-if="cur == all"><a class="banclick">下一页</a></li>
-        <li><a>共<i>{{all}}</i>页</a></li>
+        <li><a>共<i v-cloak>{{all}}</i>页</a></li>
     </ul>
 </div>
 <% include footer.ejs %>

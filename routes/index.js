@@ -130,6 +130,16 @@ router.get("/postblog",function(req,res){
     });
     
 });
+router.get("/postblog1",function(req,res){
+    Post.get('mfy',req.query.page,function(err,data){
+        if(err){
+            console.log(err);
+            return res.send({code:501,message:'读取数据失败'});
+        }
+        return res.send({code:200,lists: data});
+    });
+    
+});
 router.post("/getblogText",function(req,res){
     Post.getData(req.body.id,function(err,obj){
         if(err){
@@ -198,6 +208,17 @@ router.get("/mfy_blogs",function(req,res){
         }
         return res.render('index',{posts:data});
     });
+});
+router.get("/mfy_blogs/:id",function(req,res){
+    Post.getData(req.params.id,function(err,obj){
+        if(err){
+            console.log(err);
+            return res.send({code:501,message:'写入数据库错误'});
+        }
+        console.log(obj);
+        return res.render('detail',{data:obj});
+    });
+    
 });
 function checkLogin(req,res,next){
     console.log(req.session.user);
